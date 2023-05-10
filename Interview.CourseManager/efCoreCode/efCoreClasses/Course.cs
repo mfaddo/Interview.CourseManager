@@ -21,6 +21,6 @@ namespace Interview.CourseManager.efCoreCode.efCoreClasses
         public string daysPerWeek { get; set; }
         public float CostForMember { get; set; }
 
-       
+        public string Status { get; set; }
     }
 }
