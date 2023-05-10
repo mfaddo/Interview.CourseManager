@@ -2,6 +2,8 @@ using Interview.CourseManager.efCoreCode;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Interview.CourseManager.Services.Interfaces;
+using Interview.CourseManager.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 var _corsPolicy = "CORSPOLICY";
@@ -20,6 +22,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddTransient<ICourseService, CourseService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>

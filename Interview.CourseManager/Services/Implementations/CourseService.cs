@@ -14,7 +14,7 @@ namespace Interview.CourseManager.Services.Implementations
         {
             _applicationDbContext = applicationDbContext;
         }
-        public async Task<CourseReservation> add(CourseReservationModel courseReservationModel)
+        public async Task<CourseReservation> addReservation(CourseReservationModel courseReservationModel)
         {
            var courseReservation  = new CourseReservation();
             courseReservation.timeInHour=courseReservationModel.timeInHour;
@@ -29,6 +29,7 @@ namespace Interview.CourseManager.Services.Implementations
             {
                await _applicationDbContext.AddAsync(courseReservation);
                 courseReservation.Status = "Success";
+                _applicationDbContext.SaveChanges();
                 return courseReservation;
             }
 
@@ -61,6 +62,7 @@ namespace Interview.CourseManager.Services.Implementations
                     { 
                         await _applicationDbContext.AddAsync(courseReservation);
                         courseReservation.Status = "Success";
+                        _applicationDbContext.SaveChanges();
                         return courseReservation;
                     }
                 
@@ -79,6 +81,7 @@ namespace Interview.CourseManager.Services.Implementations
             }
             await _applicationDbContext.AddAsync(courseReservation);
             courseReservation.Status = "Success";
+            _applicationDbContext.SaveChanges();
             return courseReservation;
         }
     }

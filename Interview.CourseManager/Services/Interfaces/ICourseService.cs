@@ -5,6 +5,6 @@ namespace Interview.CourseManager.Services.Interfaces
 {
     public interface ICourseService
     {
-        Task<CourseReservation> add(CourseReservationModel courseReservationModel);
+        Task<CourseReservation> addReservation(CourseReservationModel courseReservationModel);
     }
 }
