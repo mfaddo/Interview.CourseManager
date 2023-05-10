@@ -161,7 +161,7 @@ namespace Interview.CourseManager.Migrations
                     b.ToTable("SportTypes");
                 });
 
-            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.Staduim", b =>
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.Stadium", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -174,7 +174,7 @@ namespace Interview.CourseManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Staduim");
+                    b.ToTable("Stadium");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -399,11 +399,11 @@ namespace Interview.CourseManager.Migrations
 
             modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.CourseReservation", b =>
                 {
-                    b.HasOne("Interview.CourseManager.efCoreCode.efCoreClasses.Staduim", "Staduim")
+                    b.HasOne("Interview.CourseManager.efCoreCode.efCoreClasses.Stadium", "Stadium")
                         .WithMany()
                         .HasForeignKey("StaduimId");
 
-                    b.Navigation("Staduim");
+                    b.Navigation("Stadium");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

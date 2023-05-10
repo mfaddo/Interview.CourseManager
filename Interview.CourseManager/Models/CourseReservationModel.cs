@@ -6,6 +6,6 @@ namespace Interview.CourseManager.Models
     {
         public DateTime Date { get; set; }
         public int timeInHour { get; set; }
-        public Staduim Staduim { get; set; }
+        public Stadium Staduim { get; set; }
     }
 }

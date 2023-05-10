@@ -15,6 +15,7 @@ namespace Interview.CourseManager.efCoreCode
         public DbSet<ClubBranch> ClubBranches { get; set; }
         public DbSet<Academy> Academys { get; set;}
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Stadium> Stdiums { get; set; }
         public DbSet<CourseReservation> courseReservations { get; set; }
 
     }

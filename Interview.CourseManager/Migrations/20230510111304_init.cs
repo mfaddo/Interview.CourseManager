@@ -75,7 +75,7 @@ namespace Interview.CourseManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Staduim",
+                name: "Stadium",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -246,7 +246,7 @@ namespace Interview.CourseManager.Migrations
                     table.ForeignKey(
                         name: "FK_courseReservations_Staduim_StaduimId",
                         column: x => x.StaduimId,
-                        principalTable: "Staduim",
+                        principalTable: "Stadium",
                         principalColumn: "Id");
                 });
 
@@ -362,7 +362,7 @@ namespace Interview.CourseManager.Migrations
                 name: "Courses");
 
             migrationBuilder.DropTable(
-                name: "Staduim");
+                name: "Stadium");
 
             migrationBuilder.DropTable(
                 name: "Academys");

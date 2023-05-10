@@ -12,7 +12,7 @@ namespace Interview.CourseManager.efCoreCode.efCoreClasses
 
       
         public int timeInHour { get; set; }
-        public Staduim Staduim { get; set; }
+        public Stadium Staduim { get; set; }
         public string Status { get; set; }
     }
 }
