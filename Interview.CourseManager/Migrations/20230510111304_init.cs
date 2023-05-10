@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Interview.CourseManager.Migrations
 {
-    public partial class startupcode : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace Interview.CourseManager.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,29 +62,29 @@ namespace Interview.CourseManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClubBranches",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClubBranches", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SportTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SportTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Staduim",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Staduim", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,6 +193,82 @@ namespace Interview.CourseManager.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sportTypeId = table.Column<int>(type: "int", nullable: true),
+                    AcademyId = table.Column<int>(type: "int", nullable: true),
+                    ageFrom = table.Column<int>(type: "int", nullable: false),
+                    ageTo = table.Column<int>(type: "int", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    dayFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Days = table.Column<int>(type: "int", nullable: false),
+                    startTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    numberOfSessions = table.Column<int>(type: "int", nullable: false),
+                    sessionDurationInHours = table.Column<int>(type: "int", nullable: false),
+                    daysPerWeek = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CostForMember = table.Column<float>(type: "real", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Courses_Academys_AcademyId",
+                        column: x => x.AcademyId,
+                        principalTable: "Academys",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Courses_SportTypes_sportTypeId",
+                        column: x => x.sportTypeId,
+                        principalTable: "SportTypes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "courseReservations",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    timeInHour = table.Column<int>(type: "int", nullable: false),
+                    StaduimId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_courseReservations", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_courseReservations_Staduim_StaduimId",
+                        column: x => x.StaduimId,
+                        principalTable: "Staduim",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClubBranches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BranchName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Courseid = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClubBranches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClubBranches_Courses_Courseid",
+                        column: x => x.Courseid,
+                        principalTable: "Courses",
+                        principalColumn: "id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -231,13 +307,30 @@ namespace Interview.CourseManager.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClubBranches_Courseid",
+                table: "ClubBranches",
+                column: "Courseid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_courseReservations_StaduimId",
+                table: "courseReservations",
+                column: "StaduimId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_AcademyId",
+                table: "Courses",
+                column: "AcademyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_sportTypeId",
+                table: "Courses",
+                column: "sportTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Academys");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -257,13 +350,25 @@ namespace Interview.CourseManager.Migrations
                 name: "ClubBranches");
 
             migrationBuilder.DropTable(
-                name: "SportTypes");
+                name: "courseReservations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "Staduim");
+
+            migrationBuilder.DropTable(
+                name: "Academys");
+
+            migrationBuilder.DropTable(
+                name: "SportTypes");
         }
     }
 }

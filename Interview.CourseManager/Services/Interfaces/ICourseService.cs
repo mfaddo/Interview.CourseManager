@@ -1,7 +1,10 @@
-﻿namespace Interview.CourseManager.Services.Interfaces
+﻿using Interview.CourseManager.efCoreCode.efCoreClasses;
+using Interview.CourseManager.Models;
+
+namespace Interview.CourseManager.Services.Interfaces
 {
     public interface ICourseService
     {
-        //TODO fill your service Here...
+        Task<CourseReservation> add(CourseReservationModel courseReservationModel);
     }
 }

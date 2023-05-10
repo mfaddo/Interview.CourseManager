@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Interview.CourseManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230510063320_startup-code")]
-    partial class startupcode
+    [Migration("20230510111304_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,6 @@ namespace Interview.CourseManager.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -50,12 +49,102 @@ namespace Interview.CourseManager.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BranchName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Courseid")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Courseid");
+
                     b.ToTable("ClubBranches");
+                });
+
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.Course", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int?>("AcademyId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("CostForMember")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Days")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Level")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ageFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ageTo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("dayFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("daysPerWeek")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("numberOfSessions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("sessionDurationInHours")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("sportTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("startTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("AcademyId");
+
+                    b.HasIndex("sportTypeId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.CourseReservation", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("StaduimId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("timeInHour")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("StaduimId");
+
+                    b.ToTable("courseReservations");
                 });
 
             modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.SportType", b =>
@@ -67,12 +156,27 @@ namespace Interview.CourseManager.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("SportTypes");
+                });
+
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.Staduim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Staduim");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -273,6 +377,37 @@ namespace Interview.CourseManager.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.ClubBranch", b =>
+                {
+                    b.HasOne("Interview.CourseManager.efCoreCode.efCoreClasses.Course", null)
+                        .WithMany("clubBranches")
+                        .HasForeignKey("Courseid");
+                });
+
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.Course", b =>
+                {
+                    b.HasOne("Interview.CourseManager.efCoreCode.efCoreClasses.Academy", "Academy")
+                        .WithMany()
+                        .HasForeignKey("AcademyId");
+
+                    b.HasOne("Interview.CourseManager.efCoreCode.efCoreClasses.SportType", "sportType")
+                        .WithMany()
+                        .HasForeignKey("sportTypeId");
+
+                    b.Navigation("Academy");
+
+                    b.Navigation("sportType");
+                });
+
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.CourseReservation", b =>
+                {
+                    b.HasOne("Interview.CourseManager.efCoreCode.efCoreClasses.Staduim", "Staduim")
+                        .WithMany()
+                        .HasForeignKey("StaduimId");
+
+                    b.Navigation("Staduim");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -322,6 +457,11 @@ namespace Interview.CourseManager.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Interview.CourseManager.efCoreCode.efCoreClasses.Course", b =>
+                {
+                    b.Navigation("clubBranches");
                 });
 #pragma warning restore 612, 618
         }
